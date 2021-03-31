@@ -1,24 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import ToDoListItem from "./ToDoListItem";
+import ToDoListAddItem from "./ToDoListAddItem";
+import { useState } from "react";
+import { Card, Typography } from "@material-ui/core";
 
 function App() {
+  const [todoListItems, setToDoListItems] = useState([
+    { item: "Learn React", isComplete: false },
+    { item: "Learn Redux", isComplete: false },
+    { item: "Get Vaccinated", isComplete: true },
+  ]);
+
+  const addItem = (item) => {
+    const currentItems = [...todoListItems];
+    currentItems.push({
+      item: item,
+      isComplete: false,
+    });
+    setToDoListItems(currentItems);
+  };
+  const toggleItemChecked = (index) => {
+    const currentItems = [...todoListItems];
+    currentItems[index].isComplete = !currentItems[index].isComplete;
+    setToDoListItems(currentItems);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Card className="App">
+      <Typography variant="h4">My To-Dos!</Typography>
+      {todoListItems.map((todoListItem, index) => (
+        <ToDoListItem
+          key={index}
+          item={todoListItem}
+          toggleItem={toggleItemChecked}
+          index={index}
+        />
+      ))}
+      <ToDoListAddItem addItem={addItem} />
+    </Card>
   );
 }
 
